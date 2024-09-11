@@ -1,0 +1,19 @@
+Project description: ML-based program that transcribes text from an image
+Students: Travis Durrant and Timothy Weathers
+
+Project idea:
+Expanding on the above brief, the program will be given an image and after that spit out a text file containing the transcription.
+This will be powered by a (*double-check this) reinforcement based machine learning algorithm.
+This algorithm will be responsible for detecting the text, and a script will turn it into a text file.
+
+Resources: Python, training data (single characters and longer), testing data (single characters and longer)
+
+BGM:
+The most important is the data, which can be either found online (MNIST).
+TensorFlow looks like a library we want, though I haven't extensively looked through it yet.
+Keras website has a lot of good documentation, might be better than TensorFlow (research later).
+Even if we don't use it, they have a lot of good examples to learn from.
+SciKit looks easy, and also has good guides and documentation.
+
+I think SciKit is the best one to start with, and maybe pivot (jump ship) later.
+Only if it turns out to have been the wrong choice, though.
