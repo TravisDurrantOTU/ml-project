@@ -1,0 +1,145 @@
+note: *- means it's a question I need to find an answer for
+
+	Lecture 2: Tensors
+- a tensor is just a generalized matrix
+- can also be represented as nested matrices
+- scalar is technically a 0-tensor, prob not relevant
+- generalized tensor transpose is kind of confusing
+	- maybe find more info on topic
+
+skipping 3
+
+Lecture 4: Representation of Data As Tensors
+- think of encoding and decoding as functions in their own rights
+- rescaling is important and difficult
+- if rescaled encode is still an encoding, that means encoding function not unique
+	- should still have unique inverse though
+*- (can we represent a picture as a matrix of pixels? is this valuable or inefficient)
+- visualization will get complicated for higher order tensors
+- one hot encoding for categorical variables ***important for us
+	- encoding must have a decoding function
+	- encoding vectors are equaly spaced
+- encoding words can be done as above, but results in very large vectors
+- individual pixels are defined by intensity of RGB.
+	- therefore a pixel is a vector of length 3 [R, G, B]
+- single color image as matrix of pixels
+	- therefore image as tensor of shape (width, length, 3)
+	- so if you can recolour an image to B+W, better?
+- generate images by constructing rank 3 tensors (see example in notes)
+- go back to this when constructing the B+W mask for the dataset.
+	- it's a little complicated to write down in a notepad app, but I get the idea
+- A video is just a sequence of images
+
+Lecture 5: Functions in V.S. and Applications
+- talks about generalized function and some simple functions
+- pull the function up a dimension to work on tensor of one higher dimension
+	- this gives you a tensor of outputs
+	- referred to as batch processing
+- Evaluation (also prediction, inference) is going the other direction
+	- so given some output, what do we think the input was?
+- Parameter estimation is the bulk of what we need to do
+	- So if I understand correctly:
+	- Need to decode the training data
+	- Using the training data, make a function
+	- est : (X, Y, f) -> k
+	- Where X is the input data, Y is the classifications
+	- f is a function mapping X -> Y
+	- And k is a parameter of f
+*- (double check this understanding with Mehran)
+- A loss function defines the amount of dissimilarity between two tensors
+	- (in the output space)
+- L : range(f) x range(f) -> R
+- In english, L takes an ordered pair from the output space and defines a distance between them
+*- Is this a distance (metric) or is it technically not?
+*- If some loss functions are, is every loss function a metric?
+- useful examples
+- it promises an example for multi-label classification but there is none
+- this makes me sad
+
+Skipping lecture 6 because it's just calculus
+I think the important concept is optimizing for the minima of the loss function here
+It was, and it suggests gradient descent
+Picking a starting point is important then
+
+Lecture 7 includes a lot of syntax examples
+And a very useful example of gradient descent wrt loss
+
+Lecture 8 is just linear regression, not useful for this project
+
+Lecture 9:
+- A neuron is just a function f(w,x,b): R^n -> R^1
+- A single neuron can be trained over a lot of data
+	- Optimizing weight (w) and bias (b)
+- If we want a vector output of len = k, use k neurons
+- "Layers" of neurons can be concatenated to form a multi-layer perceptron
+- These are expensive computationally but useful
+
+Lecture 10:
+- Learning is the process of tuning parameters to minimize error wrt some training data
+	- Not new concept, but thought it was an important way to think of the matter
+- Two problems in training dataL
+	1. Noise
+	2. Incompleteness
+- Ideal learning algorithm solves these two problems:
+	1. Rejects noise
+	2. Generalizes to unseen data
+- A learning model will overfit to noisy data, leaving bad predictions to unseen, new data
+- Use test data to assess accuracy after the learning process is complete
+- The union of test and training data (Test U Train) should be 0
+	- Otherwise it's not very useful
+- Plot the test error over time
+	- This gives you a visual of where overlearning is leading to overfitting
+- Cross-validation samples a portion of training data to use as testing for that epoch
+- The amount of data set aside can be 1, some discrete value, or a percentage
+- Keep this subset away from the training data when fed to the algorithms
+(example of stopping the learning when error increases more than a certain bound)
+
+Lecture 11: Spatial Learning w Convolution Neural Networks (important for images)
+- This lecture specifically talks about our project
+- Dense layers consider all pixels together
+- MLP is a very brute force, inefficient method for images
+- Train based on neighbourhoods around a given pixel
+- Given square matrix of pixels, size n and neighbourhood size k
+- Have (n-k+1)^2 neighbourhoods
+- Moving the centeres of neighbourhoods farther away results in less overlapping
+	- Uses a new parameter referred to as a stride in the lecture
+- Each neighbourhood is connected to a neuron of the next layer
+- Each connection is a dense layer W ~= k^2 and bias b
+- Usually uses rectilinear activation
+- Every weight is the same
+- The same filter is applied across the entire image by neighbourhood generation
+	- At least, for looking at one feature
+- Multiple features must be looked for by multiple filters
+- Max pooling reduces number of neurons greatly, but still preserves most important features
+
+Lecture 12: Regulating Parameters to Avoid Overfitting
+- Introduce new terms to loss function that penalize large model parameters
+- Use norms to get size of parameters
+- Entropy measures how certain the model is about its classification
+- H: prob. dist. -> R
+	- Given by H(p) := - sum over all u( p(u)*log(p(u)) ) 
+- Large number bad for H(p)
+
+Lecture 13: Kernels
+- Kernels are methods that separate low-dimensional points
+- Not useful(?) to image classification
+
+Lecture 14: Embedding
+- Important for image class.
+	- Unfortunate, because it seems hard
+- Essentially, the idea is to lower the resolution (not a bad way to think of it for non-image data either)
+- Technically, you aren't lowering the resolution, you are encoding the data into a smaller form
+- I'm fairly sure this will come up if and when we start trying to use the model on real world data
+- You can make the encode and decoder an MLP in it's own right
+- And then it can be trained for an optimal encode/decode parameters
+
+Lecture 15: Temporal Learning w Memory
+- This lecture was a shameless rip off a blog article
+- It also seems very complicated and not relevant to our data
+- So I will not be reading it in much detail
+- It was, in fact, very complicated
+- But it seems really cool
+
+
+
+

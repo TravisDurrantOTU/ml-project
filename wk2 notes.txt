@@ -1,0 +1,21 @@
+Plan for week:
+- Reading (researching if being technical)
+	- Get a better idea of the math involved
+	- Get a better idea of the process involved
+- Data Acquisition
+	- For now, probably limit scope to numbers
+- Planning
+	- Write plan for up to week 6
+
+Reading: will save website/paper information rather than writing notes for now
+http://db.science.uoit.ca/library/teaching/machine-learning
+	- gonna read through it, ive got 3 hours
+	- I think this and examples might actually be enough to get me through
+https://www.kaggle.com/code/hojjatk/read-mnist-dataset
+	- example of file reader to parse data
+
+Data:
+- Handwritten digit data from https://www.kaggle.com/datasets/hojjatk/mnist-dataset
+
+Planning:
+- See "plan.txt"
