@@ -9,13 +9,14 @@ Week 2: (current)
 Week 3:
 - Working on conceptual stuff (this might take a lot longer than I intially thought)
 	- Pseudocode for decoding algorithm to turn image into tensor
-	- Pseudocode for other functions
+	- Pseudocode for loss function, estimate error, etc.
+	- Diagram of architecture (for visualization)
 
 Week 4:
 - Implementation
-	- Decide on which library to use
-	- Write the above functions into python
-	- Test and make sure they work as expected
+	- Download TensorFlow
+	- Start by implementing the decoding
+	- Work from there based on diagram
 
 Week 5:
 - Continue writing code from week 4 ONLY IF DELAYED
@@ -23,8 +24,8 @@ Week 5:
 - Work on taking new data to prediction algorithm
 - So need to resize, and mask the data so it looks like whatever we did to the training data
 	- See notes on embedding, essentially will need to lower resolution of images
+- Start improving the model if time permits
 
 Week 6:
-- The above will probably take a while
-- And we have to write a godforsaken 10 page report
-- So that
+- Implement cross-validation, and any other improvements thought possible
+- Set aside a lil time for a 10 page report

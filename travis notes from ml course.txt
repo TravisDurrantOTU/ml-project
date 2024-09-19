@@ -15,6 +15,7 @@ Lecture 4: Representation of Data As Tensors
 - if rescaled encode is still an encoding, that means encoding function not unique
 	- should still have unique inverse though
 *- (can we represent a picture as a matrix of pixels? is this valuable or inefficient)
+- Further reading through the course indicaates that this is exactly what should be done
 - visualization will get complicated for higher order tensors
 - one hot encoding for categorical variables ***important for us
 	- encoding must have a decoding function
