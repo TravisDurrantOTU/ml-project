@@ -1,0 +1,43 @@
+Read over this website:
+http://neuralnetworksanddeeplearning.com/chap6.html#introducing_convolutional_networks
+
+Also used this website:
+https://machinelearningmastery.com/cross-entropy-for-machine-learning/
+
+Steps for the algorithms:
+Data Prep
+	- 28 x 28 x 3 image, in colour
+	- Grayscale to obtain 28 x 28 x 1 tensor
+	- If necessary, develop mask to create 28 x 28 x 1 tensor with all boolean values
+Convolution layer
+	- Take neighbourhoods of size 5x5
+	- Connect these to 6 feature maps each
+	- Each connection has its own weight, and each neighbourhood shares a bias
+	- so will have 24 x 24 x 6 neurons in the first hidden layer(s)
+	- Note that each set of 24 x 24 shares a 5x5 weight matrix and bias
+	- This causes that (24x24) layer to keep looking for one feature, but at different places
+Max-pooling layer
+	- Take 2x2 region of input from first hidden layer
+	- Output maximum activation value across that 2x2 region
+	- Six of these correspond to six of the feature maps
+Output layer (final dense layer)
+	- 10 neurons, corresponding to the digits 0-9
+	- Each of these is connected to every single max-pooling neuron
+	- Whichever of these activation values is the highest, is the network's prediction
+
+Backpropagation is a requirement for this kind of network
+
+So we gotta figure out loss function, activation function
+Loss function should be the cross-entropy log function for the final layer
+Because we're essentially comparing probabilities
+
+What activation function to use isn't a question I'm really seeing a good answer for?
+People seem to just throw a sigmoid at it and call it a day.
+Note that Ken Pu's notes suggest rectilinear activation  for the connection between the input layer and first hidden layer.
+Max-pooling layer obviously makes use of max-out activation function
+
+So data -> input layer -> first hidden layer -> max-pooling layer -> output layer -> classification
+     		 (rectilinear)            (sigmoid)	     (max-out)		(soft-max)
+
+*** Ask about loss functions for the other layers in class
+I understand the loss function for the final layer, but not what the loss function for the others would be
