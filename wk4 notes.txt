@@ -1,0 +1,22 @@
+I read a lot of tensorflow API documentation
+
+Decided to load the MNIST data directly from tensorflow, because it saves on work
+
+Architecture of the model is exactly what I wrote about last week,
+with the sole exception of tensorflow handling cross-validation rather easily
+so cross-validation is not a week 6 task
+
+Next week:
+Want to increase the accuracy of the model
+	- Think about adding more layers
+	- Or more filters to existing layers
+	- Think about changing activation
+Want to generate more useful metrics than just true guesses / total guesses
+	- For example, what gets mapped to what (wrongly)
+	- Like, are 8's being mistaken for 9's? 7's for 1's?
+Want to generate plots and stuff that will look good in a report
+	- The above would look good on some nice bar graphs
+Especially want to make it show wrong guesses for human inspection
+	- I read on some useful page that I noted down last week
+	- That some of the wrong guesses are just nonsensice
+	- like an 8 that just looked like a blob type shi
