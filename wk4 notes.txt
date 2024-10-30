@@ -20,3 +20,9 @@ Especially want to make it show wrong guesses for human inspection
 	- I read on some useful page that I noted down last week
 	- That some of the wrong guesses are just nonsensice
 	- like an 8 that just looked like a blob type shi
+
+____
+Interpolation method for resizing images
+Confusion matrix
+	-> 10x10 matrix showing what gets classified as what
+Numerical representation of my dream chart, ideally diagonal matrix
