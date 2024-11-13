@@ -16,7 +16,8 @@ def train_model(filters = 6,
                 metrics=['accuracy'],
                 epochs = 5,
                 batch_size = 64,
-                validation_split = 0.1
+                validation_split = 0.1,
+                learning_rate = 0.001
                 ):
     # load the data from an easier source than actually reading it
     (x_train, y_train),(x_test,y_test) = mnist.load_data()
@@ -44,6 +45,7 @@ def train_model(filters = 6,
     model.compile(optimizer=opt,
                 loss='sparse_categorical_crossentropy',
                 metrics=metrics)
+    model.optimizer.learning_rate.assign(learning_rate)
 
     # Train the model
     model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size, validation_split=validation_split)
@@ -56,5 +58,3 @@ def train_model(filters = 6,
     predictions = model.predict(x_test)
 
     return predictions, test_loss, test_acc, confusion_matrix(predictions, x_test)
-
-print('this shouldn\'t be running like this')

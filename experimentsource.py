@@ -21,6 +21,8 @@ def run_experiment(test_quantity, args, graph="F"):
             batch_size_experiment(args, graph)
         case "validation_split":
             validation_split_experiment(args, graph)
+        case "learning_rate":
+            learning_rate_experiment(args, graph)
         case _:
             print("invalid use of command")
 
@@ -357,3 +359,42 @@ def validation_split_experiment(args, graph):
         axis[1].set_ylabel("Test step accuracy (%)")
         plt.savefig("./figures/exp/validation_"+str(args[0])+"-"+str(args[1]))
         plt.show()
+
+#expected args:
+#(iteration_start, iteration_end)
+#note: will be inputted as 1E(-i)
+def learning_rate_experiment(args, graph):
+    # want to store: n, time, test_loss, test_acc
+    data = np.zeros((args[1]-args[0]+1, 4))
+
+    for i in range(args[1]-args[0]+1):
+        print(f'Current learning rate: 1*10^-({args[0]+i})\nRemaining steps: {args[1]-args[0]-i}')
+        start = time.time()
+        bin, test_loss, test_acc, bin2 = train_model(learning_rate=1*(10**(-args[0]-i)))
+        elapsed = time.time()-start
+        data[i,0] = i
+        data[i,1] = elapsed
+        data[i,2] = test_loss
+        data[i,3] = test_acc
+    
+    if graph == "T":
+        figure,axis = plt.subplots(1, 2)
+        figure.set_figwidth(12.8)
+        axis[0].plot(data[:,0], data[:,1], '*-k')
+        axis[0].set_title("Time consumed against learning rate")
+        axis[0].set_xlabel("Validation split (1e-n)")
+        axis[0].set_xticks(np.arange(0, args[1]-args[0]+1, step=1))
+        axis[0].set_xticklabels(np.arange(args[0], args[1]+1, step=1))
+        axis[0].set_ylabel("Time consumed in model compilation (s)")
+        axis[1].plot(data[:,0], data[:,3], '*-r')
+        axis[1].set_title("Test step accuracy against learning rate")
+        axis[1].set_xlabel("Validation split (1e-n)")
+        axis[1].set_xticks(np.arange(0, args[1]-args[0]+1, step=1))
+        axis[1].set_xticklabels(np.arange(args[0], args[1]+1, step=1))
+        axis[1].set_yticks(np.arange(0.9, 1.0000001, step=0.01))
+        axis[1].set_yticklabels(np.arange(90, 100.00001, step=1))
+        axis[1].set_ylabel("Test step accuracy (%)")
+        plt.savefig("./figures/exp/learn-rate_"+str(args[0])+"-"+str(args[1]))
+        plt.show()
+
+run_experiment("learning_rate", (2, 4), "F")
