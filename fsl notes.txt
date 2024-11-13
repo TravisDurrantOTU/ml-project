@@ -1,0 +1,13 @@
+to do? 
+few shot learning 
+display incorrect guesses (more possible for few shot learnign)
+
+Notes on few shot learning:
+https://arxiv.org/abs/2203.04291
+https://learning-oreilly-com.uproxy.library.dc-uoit.ca/library/view/hands-on-meta-learning/9781789534207/8d47d59d-5439-427a-8c59-1567cb1afd5b.xhtml
+- FSL (few shot) begins with meta learning
+- meta learning is training the model on the patterns on learning instead of just patterns in images
+- meta learning is trained off multiple sets of tasks 
+- possible datasets for FSL: omniglot miniImagenet FC100 tieredImagenet
+- FSL for optimization based models (us) is essentially having a learner model that is trained for a specific task and having a meta learner model trained on multiple tasks adjust the learner model
+- we can use a recurring neural network while the network is optimized using gradient descent to replace gradient descent in our meta learning model to teach the meta-learning model to learn gradient descent( we are doing this because gradient descent wouldn't work on a meta learning model due to the low sample size)
