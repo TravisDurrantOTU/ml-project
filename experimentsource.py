@@ -182,7 +182,7 @@ def opt_experiment(args, graph):
         axis[1].set_yticks(np.arange(0.9, 1.0000001, step=0.01))
         axis[1].set_yticklabels(np.arange(90, 100.00001, step=1))
         axis[1].set_ylabel("Test step accuracy (%)")
-        plt.savefig("./figures/exp/opt")
+        plt.savefig("./figures/exp/opt_"+str(args))
         plt.show()
 
     return data
@@ -240,7 +240,7 @@ def activation_experiment(args, graph):
         axis[1].set_yticks(np.arange(0.9, 1.0000001, step=0.01))
         axis[1].set_yticklabels(np.arange(90, 100.00001, step=1))
         axis[1].set_ylabel("Test step accuracy (%)")
-        plt.savefig("./figures/exp/functions")
+        plt.savefig("./figures/exp/functions_"+str(args))
         plt.show()
 
     return data
@@ -359,6 +359,8 @@ def validation_split_experiment(args, graph):
         axis[1].set_ylabel("Test step accuracy (%)")
         plt.savefig("./figures/exp/validation_"+str(args[0])+"-"+str(args[1]))
         plt.show()
+    
+    return data
 
 #expected args:
 #(iteration_start, iteration_end)
@@ -396,5 +398,5 @@ def learning_rate_experiment(args, graph):
         axis[1].set_ylabel("Test step accuracy (%)")
         plt.savefig("./figures/exp/learn-rate_"+str(args[0])+"-"+str(args[1]))
         plt.show()
-
-run_experiment("learning_rate", (2, 4), "F")
+    
+    return data
