@@ -1,0 +1,10 @@
+Codes of fewshot learning:
+Multidigit MNIST:
+https://github.com/shaohua0116/MultiDigitMNIST
+
+Siamese Network (compares data given with the data it has)(also leads to dead google drive link):
+https://github.com/parasgulati/digits-recognition-using-few-shot-learning-
+
+
+
+
