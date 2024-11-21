@@ -4,9 +4,14 @@ import pandas as pd
 from tensorflow.keras import layers, models
 from tensorflow.keras.datasets import mnist
 import matplotlib.pyplot as plt
+from sklearn import metrics
 
 def confusion_matrix(predictions, x_test):
-    return 0
+    cm = metrics.confusion_matrix(x_test, predictions)
+    display = metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels= [0,1,2,3,4,5,6,7,8,9])
+    display.plot()
+    plt.show() 
+    return
 
 def train_model(filters = 6, 
                 conv_neigh=(5, 5), 
