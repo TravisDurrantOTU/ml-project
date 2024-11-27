@@ -1,4 +1,4 @@
-from modelsource import train_model
+import modelsource as m
 import matplotlib.pyplot as plt
 import numpy as np
 import time
@@ -6,23 +6,23 @@ import time
 def run_experiment(test_quantity, args, graph="F"):
     match test_quantity:
         case "filters":
-            filter_experiment(args, graph)
+             return filter_experiment(args, graph)
         case "conv_neigh":
-            conv_neigh_experiment(args, graph)
+            return conv_neigh_experiment(args, graph)
         case "max_neigh":
-            max_neigh_experiment(args, graph)
+            return max_neigh_experiment(args, graph)
         case "opt":
-            opt_experiment(args, graph)
+            return opt_experiment(args, graph)
         case "activation":
-            activation_experiment(args, graph)
+            return activation_experiment(args, graph)
         case "epochs":
-            epochs_experiment(args, graph)
+            return epochs_experiment(args, graph)
         case "batch_size":
-            batch_size_experiment(args, graph)
+            return batch_size_experiment(args, graph)
         case "validation_split":
-            validation_split_experiment(args, graph)
+            return validation_split_experiment(args, graph)
         case "learning_rate":
-            learning_rate_experiment(args, graph)
+            return learning_rate_experiment(args, graph)
         case _:
             print("invalid use of command")
 
@@ -35,7 +35,7 @@ def filter_experiment(args, graph):
     for i in range(args[1]-args[0]+1):
         print(f'Current filter count: {args[0]+i}\nRemaining steps: {args[1]-args[0]-i}')
         start = time.time()
-        bin, test_loss, test_acc, bin2 = train_model(filters=args[0]+i)
+        bin, test_loss, test_acc, bin2 = m.train_model(filters=args[0]+i)
         elapsed = time.time()-start
         data[i,0] = i
         data[i,1] = elapsed
@@ -44,7 +44,7 @@ def filter_experiment(args, graph):
     
     if graph == "T":
         figure,axis = plt.subplots(1, 2)
-        figure.set_figwidth(12.8)
+        figure.set_figwidth(16)
         axis[0].plot(data[:,0], data[:,1], '*-k')
         axis[0].set_title("Time consumed against number of filters")
         axis[0].set_xlabel("Number of filters")
@@ -60,7 +60,6 @@ def filter_experiment(args, graph):
         axis[1].set_yticklabels(np.arange(90, 100.00001, step=1))
         axis[1].set_ylabel("Test step accuracy (%)")
         plt.savefig("./figures/exp/filter_"+str(args[0])+"-"+str(args[1]))
-        plt.show()
 
     return data
 
@@ -73,7 +72,7 @@ def conv_neigh_experiment(args, graph):
     for i in range(args[1]-args[0]+1):
         print(f'Current neighbourhood size: {args[0]+i}x{args[0]+i}\nRemaining steps: {args[1]-args[0]-i}')
         start = time.time()
-        bin, test_loss, test_acc, bin2 = train_model(conv_neigh=args[0]+i)
+        bin, test_loss, test_acc, bin2 = m.train_model(conv_neigh=args[0]+i)
         elapsed = time.time()-start
         data[i,0] = i
         data[i,1] = elapsed
@@ -82,7 +81,7 @@ def conv_neigh_experiment(args, graph):
     
     if graph == "T":
         figure,axis = plt.subplots(1, 2)
-        figure.set_figwidth(12.8)
+        figure.set_figwidth(16)
         axis[0].plot(data[:,0], data[:,1], '*-k')
         axis[0].set_title("Time consumed against square neighbourhood size (Conv2D)")
         axis[0].set_xlabel("Neighbourhood size")
@@ -98,7 +97,7 @@ def conv_neigh_experiment(args, graph):
         axis[1].set_yticklabels(np.arange(90, 100.00001, step=1))
         axis[1].set_ylabel("Test step accuracy (%)")
         plt.savefig("./figures/exp/conv-neighbourhood_"+str(args[0])+"-"+str(args[1]))
-        plt.show()
+        
 
     return data
 
@@ -111,7 +110,7 @@ def max_neigh_experiment(args, graph):
     for i in range(args[1]-args[0]+1):
         print(f'Current neighbourhood size: {args[0]+i}x{args[0]+i}\nRemaining steps: {args[1]-args[0]-i}')
         start = time.time()
-        bin, test_loss, test_acc, bin2 = train_model(max_neigh=args[0]+i)
+        bin, test_loss, test_acc, bin2 = m.train_model(max_neigh=args[0]+i)
         elapsed = time.time()-start
         data[i,0] = i
         data[i,1] = elapsed
@@ -120,7 +119,7 @@ def max_neigh_experiment(args, graph):
     
     if graph == "T":
         figure,axis = plt.subplots(1, 2)
-        figure.set_figwidth(12.8)
+        figure.set_figwidth(16)
         axis[0].plot(data[:,0], data[:,1], '*-k')
         axis[0].set_title("Time consumed against square neighbourhood size (MaxPool)")
         axis[0].set_xlabel("Neighbourhood size")
@@ -136,7 +135,7 @@ def max_neigh_experiment(args, graph):
         axis[1].set_yticklabels(np.arange(90, 100.00001, step=1))
         axis[1].set_ylabel("Test step accuracy (%)")
         plt.savefig("./figures/exp/max-neighbourhood_"+str(args[0])+"-"+str(args[1]))
-        plt.show()
+        
 
     return data
 
@@ -158,7 +157,7 @@ def opt_experiment(args, graph):
     for i in range(len(args)):
         print(f'Current optimizer: {args[i]}\nRemaining steps: {len(args)}')
         start = time.time()
-        bin, test_loss, test_acc, bin2 = train_model(opt=args[i])
+        bin, test_loss, test_acc, bin2 = m.train_model(opt=args[i])
         elapsed = time.time()-start
         data[i,0] = i
         data[i,1] = elapsed
@@ -167,7 +166,7 @@ def opt_experiment(args, graph):
     
     if graph == "T":
         figure,axis = plt.subplots(1, 2)
-        figure.set_figwidth(12.8)
+        figure.set_figwidth(16)
         axis[0].plot(data[:,0], data[:,1], '*k')
         axis[0].set_title("Time consumed against chosen optimizer")
         axis[0].set_xlabel("Algorithm Name")
@@ -183,7 +182,7 @@ def opt_experiment(args, graph):
         axis[1].set_yticklabels(np.arange(90, 100.00001, step=1))
         axis[1].set_ylabel("Test step accuracy (%)")
         plt.savefig("./figures/exp/opt_"+str(args))
-        plt.show()
+        
 
     return data
 # expected args:
@@ -216,7 +215,7 @@ def activation_experiment(args, graph):
     for i in range(len(args)):
         print(f'Current function: {args[i]}\nRemaining steps: {len(args)}')
         start = time.time()
-        bin, test_loss, test_acc, bin2 = train_model(activation=args[i])
+        bin, test_loss, test_acc, bin2 = m.train_model(activation=args[i])
         elapsed = time.time()-start
         data[i,0] = i
         data[i,1] = elapsed
@@ -225,7 +224,7 @@ def activation_experiment(args, graph):
     
     if graph == "T":
         figure,axis = plt.subplots(1, 2)
-        figure.set_figwidth(12.8)
+        figure.set_figwidth(16)
         axis[0].plot(data[:,0], data[:,1], '*k')
         axis[0].set_title("Time consumed against chosen function")
         axis[0].set_xlabel("Function Shorthand")
@@ -241,7 +240,7 @@ def activation_experiment(args, graph):
         axis[1].set_yticklabels(np.arange(90, 100.00001, step=1))
         axis[1].set_ylabel("Test step accuracy (%)")
         plt.savefig("./figures/exp/functions_"+str(args))
-        plt.show()
+        
 
     return data
 
@@ -254,7 +253,7 @@ def epochs_experiment(args, graph):
     for i in range(args[1]-args[0]+1):
         print(f'Current number of epochs: {args[0]+i}\nRemaining steps: {args[1]-args[0]-i}')
         start = time.time()
-        bin, test_loss, test_acc, bin2 = train_model(epochs=args[0]+i)
+        bin, test_loss, test_acc, bin2 = m.train_model(epochs=args[0]+i)
         elapsed = time.time()-start
         data[i,0] = i
         data[i,1] = elapsed
@@ -263,7 +262,7 @@ def epochs_experiment(args, graph):
     
     if graph == "T":
         figure,axis = plt.subplots(1, 2)
-        figure.set_figwidth(12.8)
+        figure.set_figwidth(16)
         axis[0].plot(data[:,0], data[:,1], '*-k')
         axis[0].set_title("Time consumed against number of epochs")
         axis[0].set_xlabel("Number of epochs")
@@ -279,7 +278,7 @@ def epochs_experiment(args, graph):
         axis[1].set_yticklabels(np.arange(90, 100.00001, step=1))
         axis[1].set_ylabel("Test step accuracy (%)")
         plt.savefig("./figures/exp/epochs"+str(args[0])+"-"+str(args[1]))
-        plt.show()
+        
 
     return data
 
@@ -293,7 +292,7 @@ def batch_size_experiment(args, graph):
     for i in range(args[1]-args[0]+1):
         print(f'Current batch size: {args[0]+i}\nRemaining steps: {args[1]-args[0]-i}')
         start = time.time()
-        bin, test_loss, test_acc, bin2 = train_model(batch_size=args[0]+i)
+        bin, test_loss, test_acc, bin2 = m.train_model(batch_size=args[0]+i)
         elapsed = time.time()-start
         data[i,0] = i
         data[i,1] = elapsed
@@ -302,7 +301,7 @@ def batch_size_experiment(args, graph):
     
     if graph == "T":
         figure,axis = plt.subplots(1, 2)
-        figure.set_figwidth(12.8)
+        figure.set_figwidth(16)
         axis[0].plot(data[:,0], data[:,1], '*-k')
         axis[0].set_title("Time consumed against batch size")
         axis[0].set_xlabel("Batch size")
@@ -318,7 +317,7 @@ def batch_size_experiment(args, graph):
         axis[1].set_yticklabels(np.arange(90, 100.00001, step=1))
         axis[1].set_ylabel("Test step accuracy (%)")
         plt.savefig("./figures/exp/batch_"+str(args[0])+"-"+str(args[1]))
-        plt.show()
+        
 
     return data
 
@@ -333,7 +332,7 @@ def validation_split_experiment(args, graph):
     for i in range(args[1]-args[0]+1):
         print(f'Current split: {args[0]+i}\nRemaining steps: {args[1]-args[0]-i}')
         start = time.time()
-        bin, test_loss, test_acc, bin2 = train_model(validation_split=(args[0]+i)/100)
+        bin, test_loss, test_acc, bin2 = m.train_model(validation_split=(args[0]+i)/100)
         elapsed = time.time()-start
         data[i,0] = i
         data[i,1] = elapsed
@@ -342,7 +341,7 @@ def validation_split_experiment(args, graph):
     
     if graph == "T":
         figure,axis = plt.subplots(1, 2)
-        figure.set_figwidth(12.8)
+        figure.set_figwidth(16)
         axis[0].plot(data[:,0], data[:,1], '*-k')
         axis[0].set_title("Time consumed against validation split")
         axis[0].set_xlabel("Validation split (%)")
@@ -358,7 +357,7 @@ def validation_split_experiment(args, graph):
         axis[1].set_yticklabels(np.arange(90, 100.00001, step=1))
         axis[1].set_ylabel("Test step accuracy (%)")
         plt.savefig("./figures/exp/validation_"+str(args[0])+"-"+str(args[1]))
-        plt.show()
+        
     
     return data
 
@@ -372,7 +371,7 @@ def learning_rate_experiment(args, graph):
     for i in range(args[1]-args[0]+1):
         print(f'Current learning rate: 1*10^-({args[0]+i})\nRemaining steps: {args[1]-args[0]-i}')
         start = time.time()
-        bin, test_loss, test_acc, bin2 = train_model(learning_rate=1*(10**(-args[0]-i)))
+        bin, test_loss, test_acc, bin2 = m.train_model(learning_rate=1*(10**(-args[0]-i)))
         elapsed = time.time()-start
         data[i,0] = i
         data[i,1] = elapsed
@@ -381,7 +380,7 @@ def learning_rate_experiment(args, graph):
     
     if graph == "T":
         figure,axis = plt.subplots(1, 2)
-        figure.set_figwidth(12.8)
+        figure.set_figwidth(16)
         axis[0].plot(data[:,0], data[:,1], '*-k')
         axis[0].set_title("Time consumed against learning rate")
         axis[0].set_xlabel("Validation split (1e-n)")
@@ -397,6 +396,25 @@ def learning_rate_experiment(args, graph):
         axis[1].set_yticklabels(np.arange(90, 100.00001, step=1))
         axis[1].set_ylabel("Test step accuracy (%)")
         plt.savefig("./figures/exp/learn-rate_"+str(args[0])+"-"+str(args[1]))
-        plt.show()
+        
     
     return data
+
+#run_experiment('filters', (3, 25), graph='T')
+#run_experiment('conv_neigh', (1, 8), graph='T')
+#run_experiment('max_neigh', (1, 6), graph='T')
+#run_experiment('opt', ['adagrad', 'rmsprop', 'adamax', 'adam', 'nadam', 'adadelta', 'ftrl'], graph='T')
+#run_experiment('activation', ['relu', 'gelu', 'elu', 'linear', 'tanh', 'sigmoid', 'hard_sigmoid'], graph='T')
+#run_experiment('epochs', (3, 40), graph='T')
+#run_experiment('validation_split', (1, 20), graph='T')
+#run_experiment('learning_rate', (1, 5), graph='T')
+# for greedy model this was the order i picked parameters in
+# epochs := 15
+# opt := rmsprop
+# act := relu, doesn't seem to be any meaningful effect with selections
+# filters := 16
+# c_n := 7
+# m_n := 3
+m.train_model() #0.9690
+m.naive_model() #0.9840
+m.greedy_model() #0.9840
