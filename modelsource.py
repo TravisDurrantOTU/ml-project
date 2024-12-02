@@ -165,4 +165,27 @@ def greedy_model(
     # Predict on the test dataset
     predictions = model.predict(x_test)
 
+    # Find misclassified images
+    misclassified_images = []
+    misclassified_labels = []
+    misclassified_preds = []
+
+    for i in range(len(x_test)):
+        true_label = y_test[i]
+        predicted_label = np.argmax(predictions[i])  # Predicted label
+        if predicted_label != true_label:  # If prediction is incorrect
+            misclassified_images.append(x_test[i])
+            misclassified_labels.append(true_label)
+            misclassified_preds.append(predicted_label)
+
+    # Print out misclassified images
+    for i in range(min(5, len(misclassified_images))):  # Limiting to 5 images
+        plt.imshow(misclassified_images[i].reshape(28, 28), cmap='gray')
+        plt.xticks(ticks=[])
+        plt.yticks(ticks=[])
+        plt.title(f"True Label: {misclassified_labels[i]}, Predicted: {misclassified_preds[i]}")
+        plt.show()
+
     return predictions, test_loss, test_acc, confusion_matrix(np.argmax(a=predictions, axis=1), np.array(y_test))
+
+greedy_model()
