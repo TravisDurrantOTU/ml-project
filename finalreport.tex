@@ -85,27 +85,28 @@ A softmax activation function, for our purposes, describes a confidence for each
 
 \[Softmax = \frac{e^{x_i}}{\sum_{j=0}^9 e^{x_j}}\]
 
-Again we have explicitly adjusted the bounds of the sum to match our dimensions. Given the input $v\in \mathbb{R}^{10}$ this explicitly adjusted softmax function returns a $\tilde v \in \mathbb{R}^{10}$ that works as a discrete probability distribution. As previously mentions, this output will then be used to decide the model's prediction.\\\\
-
-And the last function we need is the rectilinear activation function, which has a far simpler definition. This function returns the value of $x$ if $x > 0$. Otherwise, it returns $0$.\\\\
+Again we have explicitly adjusted the bounds of the sum to match our dimensions. Given the input $v\in \mathbb{R}^{10}$ this explicitly adjusted softmax function can be applied entrywise on $v$ to produce a $\tilde v \in \mathbb{R}^{10}$ that works as a discrete probability distribution. As previously mentions, this output will then be used to decide the model's prediction.\\\\
 
 The last two functions we look at are the ReLU (rectified linear unit) and tanh functions. The first is defined very simply, and the second is slightly more complicated. There are important mathematical differences between the two functions, but typically in machine learning applications, evidence supporting one's superiority tends to be semantic or experimental. Both are common choices of activation functions, and we provide the definitions as follows:
+\pagebreak
+\begin{centering}
 \[ReLU(x) = max\{0, x\}\]
 \begin{figure}[H]
-\includegraphics[width=\textwidth]{/diagrams/relu}
+\includegraphics[scale=0.5]{/diagrams/relu}
 \caption{Graph of ReLU function}
 \end{figure}
 \[tanh(x) = \frac{e^{x} - e^{-x}}{e^{x}+e^{-x}}\]
 \begin{figure}[H]
-\includegraphics[width=\textwidth]{/diagrams/tanh}
+\includegraphics[scale=0.5]{/diagrams/tanh}
 \caption{Graph of tanh function}
 \end{figure}
+\end{centering}
 
 \subsection*{2.2 Computational Background}
 
-For the computational background, we will look at two algorithms inherent to the solution of our problem, and machine learning as a whole.\\
+For the computational background, we will look at some algorithms inherent to the solution of our problem, and machine learning as a whole.\\
 
-First, we look at two stochastic gradient descent algorithms, called ADAM and RMSProp. It is one of many available algorithms for this purpose, but is experimentally shown to provide better results than other contemporary algorithms (Kingma \& Ba, 2017). RMSProp (full name: root mean square propagation) is an "adaptive learning rate [method]", which is an "extension of Stochastic Gradient Descent and... the foundation of Adam" (Huang 2020). Both of these options work very similarly to other numerical gradient descent algorithms, by iteratively updating some parameter, to minimize some function. In a machine learning application, this parameter is one of the model parameters (recall, weights and biases), and the function is the model loss function.\\\\
+First, we look at two stochastic gradient descent algorithms, called ADAM and RMSProp. Adam is just one of many available algorithms for this purpose, but is experimentally shown to provide better results than other contemporary algorithms (Kingma \& Ba, 2017). RMSProp (full name: root mean square propagation) is an "adaptive learning rate [method]", which is an "extension of Stochastic Gradient Descent and... the foundation of Adam" (Huang 2020). Both of these options work very similarly to other numerical gradient descent algorithms, by iteratively updating some parameter, to minimize some function. In a machine learning application, this parameter is one of the model parameters (recall, weights and biases), and the function is the model loss function. In the specific case of an adaptive learning rate method, of which these both are, the learning rate changes over the course of the running.\\\\
 
 Second, is kind of an algorithm, but can also be thought of as a simple process. Backpropagation, as an algorithm, is repeated use of the chosen stochastic gradient descent algorithm. It is applied first to the last layer of the model, optimizing the loss function based on the very last set of weights and biases we get to tweak. Then, we backpropagate, applying this algorithm to the next layer back in the chain. Then the next layer back, and so on, until we have minimized the loss function for every weight and bias involved.\\\\
 
@@ -115,7 +116,7 @@ We will now make a quick note, for the promised explanation of parameters versus
 \subsection*{3.1 Original Architecture}
 To explain the methodology for classifying images from the MNIST dataset, we begin by discussing how the model takes input, and describing that input. \\
 
-The MNIST dataset consists of $70000$ $28\times 28$ images, depicting handwritten numbers. These images, as noted previously, are centred and padded with whitespace. We encode these images as tensors in three dimensions: length, width, and the intensities of the RGB channels. So any image can be encoded in a tensor of dimension $(n, n, 3)$. We can further simplify this dimension by grayscaling the images, resulting in a square matrix of dimension $(n, n)$. By doing this, we can write our model as a function $f: M_{n,n} \rightarrow  \{0,1,\cdots,9\}$.\\
+The MNIST dataset consists of $70000$ $28\times 28$ images, depicting handwritten numbers. These images, as noted previously, are centred and padded with whitespace. We encode these images as tensors in three dimensions: length, width, and the intensities of the RGB channels. So any image can be encoded in a tensor of dimension $(n, n, 3)$. We can further simplify this dimension by grayscaling the images, resulting in a square matrix of dimension $(n, n)$, where each image corresponds to the intensity of a pixel. By doing this, we can write our model as a function $f: M_{n,n} \rightarrow  \{0,1,\cdots,9\}$.\\
 
 Our machine learning model utilizes a convolutional neural network (otherwise known as a CNN). This is a neural network that focuses on image recognition through the use of convolutional layers to detect patterns across images. This structure is ideal for our problem, because it is specifically an architecture meant to deal with images. Our specific (original) structure is as follows. We start with the image encoded into a tensor as described, and that is provided as input to a convolutional layer. This convolutional layer has six filters, a neighbourhood size of five, and a stride of one. We connect this to a max-pooling layer with a neighbourhood size of two, and again a stride of one. The layers are then flattened to a dense layer of sixty-four neurons. We connect this to a final dense layer of ten neurons, which provides the output. Note that the convolutional layer and first dense layer use rectilinear activation functions, and the output layer uses a softmax activation function to produce a final probability distribution.
 \begin{figure}[H]
@@ -182,7 +183,7 @@ This $~98.5\%$ is not quite a hard limit on the accuracy, but we hypothesize tha
 \includegraphics[width=\textwidth]{/exp/t9p8}
 \caption{Image with true label: 9 Greedy prediction: 8}
 \end{figure}
-In this particular image, a human eye \textit{can} usually recognize the digit as a nine. However, the model does not. The gap in the arm of the nine is very small, in fact, smaller than the convolutional layer's neighbourhood. This, in a manner of speaking, hides the gap from the model. It shouldn't come across as unfeasible for the model to be confused by this image. The way to combat this would be to add more filters and lower the neighbourhood size, but that tends to decrease performance across more typical images.
+In this particular image, a human eye \textit{can} usually recognize the digit as a nine. However, the model does not. The gap in the arm of the nine is very small, in fact, smaller than the convolutional layer's neighbourhood. This, in a manner of speaking, hides the gap from the model. It shouldn't come across as infeasible for the model to be confused by this image. The way to combat this would be to add more filters and lower the neighbourhood size, but that tends to decrease performance across more typical images.
 \begin{figure}[H]
 \includegraphics[width=\textwidth]{/exp/t5p3}
 \caption{An image misclassified by the greedy model}
